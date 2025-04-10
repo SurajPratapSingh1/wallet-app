@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard';
 import ScanPay from './pages/ScanPay';
 import EarnPoints from './pages/EarnPoints';
 import Navbar from './components/NavBar';
-import { askNotificationPermission } from './utils/Notify';
+import { askNotificationPermission } from './utils/notify.js';
 
 function AppContent() {
   const location = useLocation();

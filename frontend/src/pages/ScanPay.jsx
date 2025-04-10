@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { notify } from "../utils/Notify";
+import { notify } from "../utils/notify.js";
 const API = import.meta.env.VITE_API_BASE_URL;
 
 export default function ScanPay() {

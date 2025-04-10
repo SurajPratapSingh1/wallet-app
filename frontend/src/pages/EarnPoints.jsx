@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import { notify } from "../utils/Notify";
+import { notify } from "../utils/notify.js";
 const API = import.meta.env.VITE_API_BASE_URL;
 
 const tasks = [
