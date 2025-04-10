@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"; 
 import { useState } from 'react';
 import axios from 'axios';
+const API = import.meta.env.VITE_API_BASE_URL;
 
 export default function Register() {
     const [form, setForm] = useState({username : "", email : "", password : ""});
@@ -14,7 +15,7 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:5000/api/auth/register", form);
+            await axios.post(`${API}/api/auth/register`, form);
             navigate("/");
         } catch(err) {
             setError(err.response?.data?.error || "Registration failed");

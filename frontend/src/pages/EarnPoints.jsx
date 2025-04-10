@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { notify } from "../utils/Notify";
+const API = import.meta.env.VITE_API_BASE_URL;
 
 const tasks = [
     { id: "daily-login", label: "Daily Login" },
@@ -15,7 +16,7 @@ export default function EarnPoints() {
 
     const handleEarn = async (taskId) => {
         try {
-            const res = await axios.post("http://localhost:5000/api/wallet/earn", {
+            const res = await axios.post(`${API}/api/wallet/earn`, {
                 task : taskId,
             }, {
                 headers : {Authorization : user.token},

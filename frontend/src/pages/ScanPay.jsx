@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { notify } from "../utils/Notify";
+const API = import.meta.env.VITE_API_BASE_URL;
 
 export default function ScanPay() {
     const { user } = useAuth();
@@ -14,7 +15,7 @@ export default function ScanPay() {
     const handlePay = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:5000/api/wallet/transfer", {
+            const res = await axios.post(`${API}/api/wallet/transfer`, {
                 to: receiver,
                 amount: Number(amount),
                 }, {

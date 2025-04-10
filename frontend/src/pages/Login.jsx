@@ -8,6 +8,7 @@ export default function Login() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const { login } = useAuth();
+    const API = import.meta.env.VITE_API_BASE_URL;
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name] : e.target.value});
@@ -16,7 +17,7 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:5000/api/auth/login", form);
+            const res = await axios.post(`${API}/api/auth/login`, form);
             login(res.data);
             navigate("/dashboard");
         } catch (err) {

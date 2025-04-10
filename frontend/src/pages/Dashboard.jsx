@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { QRCodeCanvas } from "qrcode.react";
 import { useTheme } from "../context/ThemeContext";
+const API = import.meta.env.VITE_API_BASE_URL;
 
 export default function Dashboard() {
     const { user, logout } = useAuth();
@@ -16,7 +17,7 @@ export default function Dashboard() {
         if(!user) return navigate("/");
         const fetchBalance = async () => {
             try {
-                const res = await axios.get("http://localhost:5000/api/wallet/balance", {
+                const res = await axios.get(`${API}/api/wallet/balance`, {
                     headers: {
                         Authorization: user.token,
                     },
@@ -33,7 +34,7 @@ export default function Dashboard() {
     useEffect(() => {
       if (!user) return;
   
-      axios.get("http://localhost:5000/api/wallet/transactions", {
+      axios.get(`${API}/api/wallet/transactions`, {
           headers: {
               Authorization: user.token
           }
