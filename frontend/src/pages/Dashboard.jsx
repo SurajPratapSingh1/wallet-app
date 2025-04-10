@@ -5,6 +5,7 @@ import axios from "axios";
 import { QRCodeCanvas } from "qrcode.react";
 import { useTheme } from "../context/ThemeContext";
 const API = import.meta.env.VITE_API_BASE_URL;
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
     const { user, logout } = useAuth();
