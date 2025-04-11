@@ -12,26 +12,19 @@ export default function ScanPay() {
   const [receiver, setReceiver] = useState("");
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
-  const [redirect, setRedirect] = useState(false);
   const navigate = useNavigate();
   const scannerRef = useRef(null);
 
   useEffect(() => {
-    if (redirect) {
-      navigate("/dashboard");
-    }
-  }, [redirect, navigate]);  
-
-  useEffect(() => {
     const scanner = new Html5Qrcode("qr-reader");
-  
+
     Html5Qrcode.getCameras().then((devices) => {
       if (devices && devices.length) {
         const backCamera = devices.find((d) =>
           d.label.toLowerCase().includes("back")
         );
         const cameraId = backCamera ? backCamera.id : devices[0].id;
-  
+
         scanner
           .start(
             cameraId,
@@ -42,9 +35,9 @@ export default function ScanPay() {
             (decodedText) => {
               setReceiver(decodedText);
               notify("Scanned!", `Scanned username: ${decodedText}`);
-  
+
               scanner.stop().then(() => {
-                console.log("Scanner stopped");
+                console.log("Scanner stopped after scan");
               });
             },
             (errorMessage) => {
@@ -59,16 +52,15 @@ export default function ScanPay() {
           });
       }
     });
-  
     return () => {
       if (scannerRef.current) {
-        scannerRef.current.stop().catch((err) => {
-          console.error("Error stopping scanner:", err);
-        });
+        scannerRef.current
+          .stop()
+          .then(() => scannerRef.current.clear())
+          .catch((err) => console.error("Cleanup error:", err));
       }
     };
   }, []);
-
   const handlePay = async (e) => {
     e.preventDefault();
     try {
@@ -86,9 +78,14 @@ export default function ScanPay() {
       );
       setMessage(res.data.message);
       notify("Payment Successful", `Sent ₹${amount} points to ${receiver}!`);
+      if (scannerRef.current) {
+        await scannerRef.current.stop();
+        await scannerRef.current.clear();
+        scannerRef.current = null;
+      }
       setTimeout(() => {
-        setRedirect(true);
-      }, 2000);
+        navigate("/dashboard");
+      }, 500);
     } catch (err) {
       if (err.response?.status === 403 || err.response?.status === 401) {
         alert("Session expired. Please log in again.");
