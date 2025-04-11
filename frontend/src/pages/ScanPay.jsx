@@ -16,38 +16,48 @@ export default function ScanPay() {
   const scannerRef = useRef(null);
 
   useEffect(() => {
-    const scanner = new Html5Qrcode("qr-reader");
-
-    Html5Qrcode.getCameras()
-      .then((devices) => {
-        if (devices && devices.length) {
-          const cameraId = devices[0].id;
-          scanner
-            .start(
-              cameraId,
-              {
-                fps: 10,
-                qrbox: 250,
-              },
-              (decodedText) => {
-                console.log("QR code scanned:", decodedText);
-                setReceiver(decodedText); // auto-fill receiver
-                scanner.stop();
-              },
-              (errorMessage) => {
-                // You can console.log errors here
-              }
-            )
-            .catch((err) => console.error("Failed to start scanner", err));
-        }
-      })
-      .catch((err) => console.error("Camera error", err));
-
-    scannerRef.current = scanner;
-
+    const scanner = new Html5Qrcode("reader");
+  
+    Html5Qrcode.getCameras().then((devices) => {
+      if (devices && devices.length) {
+        const backCamera = devices.find((d) =>
+          d.label.toLowerCase().includes("back")
+        );
+  
+        const cameraId = backCamera ? backCamera.id : devices[0].id;
+  
+        scanner
+          .start(
+            cameraId,
+            {
+              fps: 10,
+              qrbox: { width: 250, height: 250 },
+            },
+            (decodedText) => {
+              setScannedUsername(decodedText);
+              notify("Scanned!", `Scanned username: ${decodedText}`);
+              scanner.stop().then(() => {
+                console.log("Scanner stopped");
+              });
+            },
+            (errorMessage) => {
+              {errorMessage}
+            }
+          )
+          .then(() => {
+            scannerRef.current = scanner;
+          })
+          .catch((err) => {
+            console.error("Error starting scanner:", err);
+          });
+      }
+    });
+  
     return () => {
       if (scannerRef.current) {
-        scannerRef.current.stop().catch(() => {});
+        scannerRef.current.stop().catch((err) => {
+          console.error("Error stopping scanner:", err);
+        });
       }
     };
   }, []);
