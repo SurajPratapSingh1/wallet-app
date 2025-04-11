@@ -42,7 +42,7 @@ export default function Login() {
             <div>
               <label
                 htmlFor="username"
-                className="block mb-1 text-base font-medium text-white-700 dark:text-gray-200"
+                className="block mb-1 text-base font-medium text-white-700 dark:text-white-200"
               >
                 Username
               </label>
@@ -60,7 +60,7 @@ export default function Login() {
             <div>
               <label
                 htmlFor="password"
-                className="block mb-1 text-base font-medium text-white-700 dark:text-gray-200"
+                className="block mb-1 text-base font-medium text-white-700 dark:text-white-200"
               >
                 Password
               </label>
@@ -83,7 +83,7 @@ export default function Login() {
             </button>
           </form>
   
-          <p className="text-sm mt-6 text-center text-white-600 dark:text-gray-300">
+          <p className="text-sm mt-6 text-center text-white-600 dark:text-white-300">
             Don't have an account?{" "}
             <a
               href="/register"
