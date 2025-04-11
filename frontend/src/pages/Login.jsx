@@ -25,66 +25,66 @@ export default function Login() {
         }
     };
 
-      return (
-        <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#667eea] via-[#764ba2] to-[#6b73ff] dark:from-gray-900 dark:to-gray-800 p-4">
-          <div className="relative w-full max-w-md">
-            <div className="absolute inset-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/30 dark:border-gray-700"></div>
-            <form
-              onSubmit={handleSubmit}
-              className="relative z-10 p-8 md:p-10 rounded-3xl text-white dark:text-white"
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center bg-[#f7f8f9] dark:bg-[#1e1e1e] px-4">
+        <div className="w-full max-w-sm bg-white dark:bg-[#2a2b2d] rounded-2xl shadow-xl p-10">
+          <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-white mb-6">
+            Sign in to your account
+          </h2>
+  
+          {error && (
+            <p className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-sm text-center">
+              {error}
+            </p>
+          )}
+  
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Username
+              </label>
+              <input
+                name="username"
+                onChange={handleChange}
+                required
+                placeholder="Enter your username"
+                className="w-full px-5 py-3 text-base rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#10a37f] transition"
+              />
+            </div>
+  
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                onChange={handleChange}
+                required
+                placeholder="••••••••"
+                className="w-full px-5 py-3 text-base rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#10a37f] transition"
+              />
+            </div>
+  
+            <button
+              type="submit"
+              className="w-full py-3 text-lg font-semibold bg-[#10a37f] hover:bg-[#0e8e6d] text-white rounded-lg transition"
             >
-              <h2 className="text-3xl font-extrabold text-center mb-6 drop-shadow-sm">
-                Welcome Back 👋
-              </h2>
-    
-              {error && (
-                <p className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-sm text-center">
-                  {error}
-                </p>
-              )}
-    
-              <div className="mb-4">
-                <label className="block mb-1 text-sm font-semibold">Username</label>
-                <input
-                  className="w-full px-4 py-2 rounded-lg bg-white/80 dark:bg-gray-700 text-black dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
-                  name="username"
-                  placeholder="Enter your username"
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-    
-              <div className="mb-6">
-                <label className="block mb-1 text-sm font-semibold">Password</label>
-                <input
-                  className="w-full px-4 py-2 rounded-lg bg-white/80 dark:bg-gray-700 text-black dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
-                  type="password"
-                  name="password"
-                  placeholder="••••••••"
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-    
-              <button
-                type="submit"
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
-              >
-                Sign In
-              </button>
-    
-              <p className="mt-4 text-sm text-center">
-                Don't have an account?{" "}
-                <a
-                  href="/register"
-                  className="text-yellow-300 hover:text-yellow-400 font-medium transition"
-                >
-                  Register
-                </a>
-              </p>
-            </form>
-          </div>
+              Continue
+            </button>
+          </form>
+  
+          <p className="text-sm mt-6 text-center text-gray-600 dark:text-gray-400">
+            Don't have an account?{" "}
+            <a
+              href="/register"
+              className="text-[#10a37f] hover:underline font-medium"
+            >
+              Register
+            </a>
+          </p>
         </div>
-      );
+      </div>
+    );
 
 }
