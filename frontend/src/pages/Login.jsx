@@ -28,7 +28,7 @@ export default function Login() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-[#1e1e1e] px-4">
         <div className="w-full max-w-sm bg-white dark:bg-[#2a2b2d] rounded-xl shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-8">
+          <h2 className="text-2xl font-bold text-center text-white-800 dark:text-white mb-8">
             Welcome Back
           </h2>
   
@@ -42,7 +42,7 @@ export default function Login() {
             <div>
               <label
                 htmlFor="username"
-                className="block mb-1 text-base font-medium text-gray-700 dark:text-gray-200"
+                className="block mb-1 text-base font-medium text-white-700 dark:text-gray-200"
               >
                 Username
               </label>
@@ -60,7 +60,7 @@ export default function Login() {
             <div>
               <label
                 htmlFor="password"
-                className="block mb-1 text-base font-medium text-gray-700 dark:text-gray-200"
+                className="block mb-1 text-base font-medium text-white-700 dark:text-gray-200"
               >
                 Password
               </label>
@@ -83,8 +83,8 @@ export default function Login() {
             </button>
           </form>
   
-          <p className="text-sm mt-6 text-center text-gray-600 dark:text-gray-300">
-            Don’t have an account?{" "}
+          <p className="text-sm mt-6 text-center text-white-600 dark:text-gray-300">
+            Don't have an account?{" "}
             <a
               href="/register"
               className="text-[#10a37f] font-medium hover:underline"
