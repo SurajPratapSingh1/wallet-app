@@ -25,9 +25,20 @@ router.post("/transfer", auth, async (req,res) => {
     sender.points -= amount;
     receiver.points += amount;
 
-    sender.transactions.push ({ type : "sent", amount, with : receiver.username });
-    receiver.transactions.push({ type : "received", amount, with : sender.username })
-
+    sender.transactions.push({
+        type: "sent",
+        amount,
+        with: receiver.username,
+        date: new Date(),
+      });
+      
+      receiver.transactions.push({
+        type: "received",
+        amount,
+        with: sender.username,
+        date: new Date(),
+      });
+      
     await sender.save();
     await receiver.save();
 
@@ -37,7 +48,7 @@ router.post("/transfer", auth, async (req,res) => {
 
 router.get("/transactions", auth, async (req,res) => {
     const user = await User.findById(req.userId);
-    res.json({ transactions : user.transactions.reverse() });
+    res.json({ transactions : user.transactions });
 });
 
 router.post("/earn", auth, async (req,res) => {
@@ -54,10 +65,12 @@ router.post("/earn", auth, async (req,res) => {
     const user = await User.findById(req.userId);
     user.points += reward;
     user.transactions.push({
-        type : "received",
-        amount : reward,
-        with : `Task : ₹{task}`,
-    });
+        type: "received",
+        amount: reward,
+        with: `Task: ${task}`,
+        date: new Date(),
+      });
+      
     await user.save();
 
     res.json({ message : `Earned ₹{reward} points for ₹{task}` });

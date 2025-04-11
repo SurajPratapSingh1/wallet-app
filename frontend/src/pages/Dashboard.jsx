@@ -112,9 +112,9 @@ export default function Dashboard() {
             </p>
           ) : (
             <ul className="space-y-3 max-h-60 overflow-y-auto pr-1">
-              {transactions.map((tx, index) => (
+              {transactions.map((tx) => (
                 <li
-                  key={index}
+                  key={tx._id}
                   className={`rounded-xl p-4 border shadow-sm transition ${
                     tx.type === "sent"
                       ? "bg-red-50 dark:bg-red-200/10 border-red-400"
