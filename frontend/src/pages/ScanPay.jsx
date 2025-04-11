@@ -83,7 +83,6 @@ export default function ScanPay() {
       notify("Payment Successful", `Sent ₹${amount} points to ${receiver}!`);
       setMessage(res.data.message || "Payment successful! Redirecting...");
 
-      // Clean up QR scanner before redirect
       if (scannerRef.current) {
         await scannerRef.current.stop();
         await scannerRef.current.clear();
@@ -103,8 +102,7 @@ export default function ScanPay() {
         const fallbackMsg = "Payment failed. But if points were deducted, please check the receiver's wallet.";
         setMessage(err.response?.data?.error || fallbackMsg);
         notify("Payment Status", fallbackMsg);
-
-        // Still redirect if payment might have succeeded silently
+        
         setTimeout(() => {
           navigate("/dashboard");
         }, 3000);
