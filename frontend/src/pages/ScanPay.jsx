@@ -23,7 +23,6 @@ export default function ScanPay() {
         const backCamera = devices.find((d) =>
           d.label.toLowerCase().includes("back")
         );
-  
         const cameraId = backCamera ? backCamera.id : devices[0].id;
   
         scanner
@@ -34,14 +33,15 @@ export default function ScanPay() {
               qrbox: { width: 250, height: 250 },
             },
             (decodedText) => {
-              setScannedUsername(decodedText);
+              setReceiver(decodedText);
               notify("Scanned!", `Scanned username: ${decodedText}`);
+  
               scanner.stop().then(() => {
                 console.log("Scanner stopped");
               });
             },
             (errorMessage) => {
-              {errorMessage}
+              console.warn("QR Scan Error:", errorMessage);
             }
           )
           .then(() => {
