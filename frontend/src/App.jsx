@@ -7,6 +7,7 @@ import ScanPay from './pages/ScanPay';
 import EarnPoints from './pages/EarnPoints';
 import Navbar from './components/NavBar';
 import { askNotificationPermission } from './utils/notify.js';
+import { ThemeProvider } from './context/ThemeContext';
 
 function AppContent() {
   const location = useLocation();
@@ -34,8 +35,10 @@ export default function App() {
   }, []);
 
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </ThemeProvider>
   );
 }
