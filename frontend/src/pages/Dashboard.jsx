@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { QRCodeCanvas } from "qrcode.react";
 import { useTheme } from "../context/ThemeContext";
+import { notify } from "../utils/notify.js";
 
 const API = import.meta.env.VITE_API_BASE_URL;
 
