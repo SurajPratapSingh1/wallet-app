@@ -26,19 +26,66 @@ export default function Login() {
     };
 
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
-      <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-black dark:text-white">Login</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <input className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 dark:text-white" name="username" placeholder="Username" onChange={handleChange} required />
-        <input className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 dark:text-white" name="password" type="password" placeholder="Password" onChange={handleChange} required />
-        <button className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700 transition">Login</button>
-        <p className="text-sm mt-4 text-center text-black dark:text-gray-300">
-          Don't have an account? <a className="text-blue-600" href="/register">Register</a>
-        </p>
-      </form>
-    </div>
-    
-  );
+      <div className="min-h-screen bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 flex items-center justify-center px-4">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-md backdrop-blur-md bg-white/20 dark:bg-gray-800/30 p-8 rounded-2xl shadow-2xl border border-white/30 dark:border-gray-700 transition-all"
+        >
+          <h2 className="text-3xl font-extrabold text-white dark:text-white text-center mb-6 drop-shadow">
+            Welcome Back 👋
+          </h2>
+  
+          {error && (
+            <p className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-sm text-center">
+              {error}
+            </p>
+          )}
+  
+          <div className="mb-4">
+            <label className="block text-white dark:text-gray-200 mb-1 text-sm font-semibold">
+              Username
+            </label>
+            <input
+              className="w-full px-4 py-2 rounded-lg bg-white/70 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              name="username"
+              placeholder="Enter your username"
+              onChange={handleChange}
+              required
+            />
+          </div>
+  
+          <div className="mb-6">
+            <label className="block text-white dark:text-gray-200 mb-1 text-sm font-semibold">
+              Password
+            </label>
+            <input
+              className="w-full px-4 py-2 rounded-lg bg-white/70 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              onChange={handleChange}
+              required
+            />
+          </div>
+  
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+          >
+            Sign In
+          </button>
+  
+          <p className="mt-4 text-sm text-center text-white dark:text-gray-300">
+            Don’t have an account?{" "}
+            <a
+              href="/register"
+              className="text-yellow-300 hover:text-yellow-400 font-medium transition"
+            >
+              Register
+            </a>
+          </p>
+        </form>
+      </div>
+    );
 
 }
