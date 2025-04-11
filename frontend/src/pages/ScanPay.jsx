@@ -16,7 +16,7 @@ export default function ScanPay() {
   const scannerRef = useRef(null);
 
   useEffect(() => {
-    const scanner = new Html5Qrcode("reader");
+    const scanner = new Html5Qrcode("qr-reader");
   
     Html5Qrcode.getCameras().then((devices) => {
       if (devices && devices.length) {
