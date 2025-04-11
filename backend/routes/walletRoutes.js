@@ -10,14 +10,15 @@ router.get("/balance", auth, async (req, res) => {
 
 })
 
-router.post("/transfer", auth, async (req,res) => {
-    const { to, amount} = req.body;
+router.post("/transfer", auth, async (req, res) => {
+  try {
+    const { to, amount } = req.body;
     const senderId = req.userId;
 
-    if(amount <= 0) return res.status(400).json({error : "Inavalid amount"});
+    if (amount <= 0) return res.status(400).json({ error: "Invalid amount" });
 
     const sender = await User.findById(senderId);
-    const receiver = await User.findOne({username : to});
+    const receiver = await User.findOne({ username: to });
 
     if (!receiver) return res.status(404).json({ error: "Receiver not found" });
     if (sender.points < amount) return res.status(400).json({ error: "Insufficient points" });
@@ -26,25 +27,28 @@ router.post("/transfer", auth, async (req,res) => {
     receiver.points += amount;
 
     sender.transactions.push({
-        type: "sent",
-        amount,
-        with: receiver.username,
-        date: new Date(),
-      });
-      
-      receiver.transactions.push({
-        type: "received",
-        amount,
-        with: sender.username,
-        date: new Date(),
-      });
-      
+      type: "sent",
+      amount,
+      with: receiver.username,
+      date: new Date(),
+    });
+
+    receiver.transactions.push({
+      type: "received",
+      amount,
+      with: sender.username,
+      date: new Date(),
+    });
+
     await sender.save();
     await receiver.save();
 
-    res.json({ message: `Sent ${amount} points to ${to}` });
-
-})
+    return res.status(200).json({ message: `Sent ${amount} points to ${to}` });
+  } catch (err) {
+    console.error("Error in /transfer route:", err);
+    res.status(500).json({ error: "Something went wrong while transferring." });
+  }
+});
 
 router.get("/transactions", auth, async (req,res) => {
     const user = await User.findById(req.userId);
@@ -73,7 +77,7 @@ router.post("/earn", auth, async (req,res) => {
       
     await user.save();
 
-    res.json({ message : `Earned ₹{reward} points for ₹{task}` });
+    res.json({ message: `Earned ${reward} points for ${task}` });
 
  })
 
