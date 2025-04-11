@@ -23,9 +23,9 @@ export default function Register() {
     };
 
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-[#1e1e1e] px-4">
-        <div className="w-full max-w-sm bg-white dark:bg-[#2a2b2d] rounded-xl shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+        <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
             Create Account
           </h2>
   
@@ -36,37 +36,31 @@ export default function Register() {
           )}
   
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <input
-                className="w-full px-4 py-3 text-base rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="username"
-                placeholder="Username"
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <input
+              className="w-full px-4 py-3 text-base rounded-md bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="username"
+              placeholder="Username"
+              onChange={handleChange}
+              required
+            />
   
-            <div>
-              <input
-                className="w-full px-4 py-3 text-base rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="email"
-                name="email"
-                placeholder="Email"
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <input
+              className="w-full px-4 py-3 text-base rounded-md bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              type="email"
+              name="email"
+              placeholder="Email"
+              onChange={handleChange}
+              required
+            />
   
-            <div>
-              <input
-                className="w-full px-4 py-3 text-base rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="password"
-                name="password"
-                placeholder="Password"
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <input
+              className="w-full px-4 py-3 text-base rounded-md bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              type="password"
+              name="password"
+              placeholder="Password"
+              onChange={handleChange}
+              required
+            />
   
             <button
               type="submit"
@@ -76,11 +70,11 @@ export default function Register() {
             </button>
           </form>
   
-          <p className="text-sm mt-6 text-center text-gray-600 dark:text-gray-300">
+          <p className="text-sm mt-6 text-center text-gray-600">
             Already have an account?{" "}
             <a
               href="/"
-              className="text-green-500 font-medium hover:underline"
+              className="text-blue-500 font-medium hover:underline"
             >
               Login
             </a>
