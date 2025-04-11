@@ -12,20 +12,26 @@ export default function ScanPay() {
   const [receiver, setReceiver] = useState("");
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [redirect, setRedirect] = useState(false);
   const navigate = useNavigate();
   const scannerRef = useRef(null);
 
   useEffect(() => {
-    const scanner = new Html5Qrcode("qr-reader");
+    if (redirect) {
+      navigate("/dashboard");
+    }
+  }, [redirect, navigate]);  
 
+  useEffect(() => {
+    const scanner = new Html5Qrcode("qr-reader");
+  
     Html5Qrcode.getCameras().then((devices) => {
       if (devices && devices.length) {
         const backCamera = devices.find((d) =>
           d.label.toLowerCase().includes("back")
         );
         const cameraId = backCamera ? backCamera.id : devices[0].id;
-
+  
         scanner
           .start(
             cameraId,
@@ -36,7 +42,10 @@ export default function ScanPay() {
             (decodedText) => {
               setReceiver(decodedText);
               notify("Scanned!", `Scanned username: ${decodedText}`);
-              scanner.stop().then(() => console.log("Scanner stopped after scan"));
+  
+              scanner.stop().then(() => {
+                console.log("Scanner stopped");
+              });
             },
             (errorMessage) => {
               console.warn("QR Scan Error:", errorMessage);
@@ -50,22 +59,18 @@ export default function ScanPay() {
           });
       }
     });
-
+  
     return () => {
       if (scannerRef.current) {
-        scannerRef.current
-          .stop()
-          .then(() => scannerRef.current.clear())
-          .catch((err) => console.error("Cleanup error:", err));
+        scannerRef.current.stop().catch((err) => {
+          console.error("Error stopping scanner:", err);
+        });
       }
     };
   }, []);
 
   const handlePay = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setMessage("");
-
     try {
       const res = await axios.post(
         `${API}/api/wallet/transfer`,
@@ -79,36 +84,19 @@ export default function ScanPay() {
           },
         }
       );
-
+      setMessage(res.data.message);
       notify("Payment Successful", `Sent ₹${amount} points to ${receiver}!`);
-      setMessage(res.data.message || "Payment successful! Redirecting...");
-
-      if (scannerRef.current) {
-        await scannerRef.current.stop();
-        await scannerRef.current.clear();
-        scannerRef.current = null;
-      }
-
       setTimeout(() => {
-        navigate("/dashboard");
-      }, 1500);
+        setRedirect(true);
+      }, 2000);
     } catch (err) {
-      console.error("Payment Error:", err);
       if (err.response?.status === 403 || err.response?.status === 401) {
         alert("Session expired. Please log in again.");
         logout();
         navigate("/");
       } else {
-        const fallbackMsg = "Payment failed. But if points were deducted, please check the receiver's wallet.";
-        setMessage(err.response?.data?.error || fallbackMsg);
-        notify("Payment Status", fallbackMsg);
-        
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 3000);
+        setMessage(err.response?.data?.error || "Payment failed");
       }
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -146,16 +134,13 @@ export default function ScanPay() {
           required
         />
 
-        <button
-          disabled={loading}
-          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
-        >
-          {loading ? "Processing..." : "Send Points"}
+        <button className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">
+          Send Points
         </button>
 
         {message && (
           <p className="mt-4 text-center text-sm text-green-700 dark:text-green-400">
-            {message}
+            {message} <br /> Redirecting to dashboard...
           </p>
         )}
       </form>
