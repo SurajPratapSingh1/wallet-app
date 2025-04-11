@@ -7,12 +7,9 @@ const Navbar = () => {
   return (
     <nav className="bg-white dark:bg-gray-800 shadow px-4 py-3 md:px-8">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* Left: Logo or Title */}
         <Link to="/" className="text-xl font-bold text-gray-800 dark:text-white">
           💸 CryptoWallet
         </Link>
-
-        {/* Right: Links + Toggle */}
         <div className="flex items-center space-x-4">
           <Link
             to="/dashboard"
@@ -32,8 +29,6 @@ const Navbar = () => {
           >
             Scan & Pay
           </Link>
-
-          {/* Dark Mode Toggle */}
           <button
             onClick={() => setDark(!dark)}
             className="text-sm px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 dark:text-white"
