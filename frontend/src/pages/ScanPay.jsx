@@ -12,6 +12,7 @@ export default function ScanPay() {
   const [receiver, setReceiver] = useState("");
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const scannerRef = useRef(null);
 
@@ -35,10 +36,7 @@ export default function ScanPay() {
             (decodedText) => {
               setReceiver(decodedText);
               notify("Scanned!", `Scanned username: ${decodedText}`);
-
-              scanner.stop().then(() => {
-                console.log("Scanner stopped after scan");
-              });
+              scanner.stop().then(() => console.log("Scanner stopped after scan"));
             },
             (errorMessage) => {
               console.warn("QR Scan Error:", errorMessage);
@@ -52,6 +50,7 @@ export default function ScanPay() {
           });
       }
     });
+
     return () => {
       if (scannerRef.current) {
         scannerRef.current
@@ -61,8 +60,12 @@ export default function ScanPay() {
       }
     };
   }, []);
+
   const handlePay = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
     try {
       const res = await axios.post(
         `${API}/api/wallet/transfer`,
@@ -76,24 +79,38 @@ export default function ScanPay() {
           },
         }
       );
-      setMessage(res.data.message);
+
       notify("Payment Successful", `Sent ₹${amount} points to ${receiver}!`);
+      setMessage(res.data.message || "Payment successful! Redirecting...");
+
+      // Clean up QR scanner before redirect
       if (scannerRef.current) {
         await scannerRef.current.stop();
         await scannerRef.current.clear();
         scannerRef.current = null;
       }
+
       setTimeout(() => {
         navigate("/dashboard");
-      }, 500);
+      }, 1500);
     } catch (err) {
+      console.error("Payment Error:", err);
       if (err.response?.status === 403 || err.response?.status === 401) {
         alert("Session expired. Please log in again.");
         logout();
         navigate("/");
       } else {
-        setMessage(err.response?.data?.error || "Payment failed");
+        const fallbackMsg = "Payment failed. But if points were deducted, please check the receiver's wallet.";
+        setMessage(err.response?.data?.error || fallbackMsg);
+        notify("Payment Status", fallbackMsg);
+
+        // Still redirect if payment might have succeeded silently
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 3000);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -131,13 +148,16 @@ export default function ScanPay() {
           required
         />
 
-        <button className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">
-          Send Points
+        <button
+          disabled={loading}
+          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
+        >
+          {loading ? "Processing..." : "Send Points"}
         </button>
 
         {message && (
           <p className="mt-4 text-center text-sm text-green-700 dark:text-green-400">
-            {message} <br /> Redirecting to dashboard...
+            {message}
           </p>
         )}
       </form>
