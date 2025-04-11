@@ -80,7 +80,7 @@ export default function Register() {
             Already have an account?{" "}
             <a
               href="/"
-              className="text-blue-500 font-medium hover:underline"
+              className="text-green-500 font-medium hover:underline"
             >
               Login
             </a>
