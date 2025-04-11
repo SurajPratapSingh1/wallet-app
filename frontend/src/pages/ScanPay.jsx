@@ -12,8 +12,15 @@ export default function ScanPay() {
   const [receiver, setReceiver] = useState("");
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
+  const [redirect, setRedirect] = useState(false);
   const navigate = useNavigate();
   const scannerRef = useRef(null);
+
+  useEffect(() => {
+    if (redirect) {
+      navigate("/dashboard");
+    }
+  }, [redirect, navigate]);  
 
   useEffect(() => {
     const scanner = new Html5Qrcode("qr-reader");
@@ -79,7 +86,9 @@ export default function ScanPay() {
       );
       setMessage(res.data.message);
       notify("Payment Successful", `Sent ₹${amount} points to ${receiver}!`);
-      setTimeout(() => navigate("/dashboard"), 2000);
+      setTimeout(() => {
+        setRedirect(true);
+      }, 2000);
     } catch (err) {
       if (err.response?.status === 403 || err.response?.status === 401) {
         alert("Session expired. Please log in again.");
@@ -131,7 +140,7 @@ export default function ScanPay() {
 
         {message && (
           <p className="mt-4 text-center text-sm text-green-700 dark:text-green-400">
-            {message}
+            {message} <br /> Redirecting to dashboard...
           </p>
         )}
       </form>
