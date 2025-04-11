@@ -26,23 +26,23 @@ export default function Login() {
     };
 
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f2f4f7] dark:bg-[#1e1e1e] px-4">
-        <div className="w-full max-w-[420px] bg-white dark:bg-[#2a2b2d] rounded-2xl shadow-2xl p-10">
-          <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-10">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-[#1e1e1e] px-4">
+        <div className="w-full max-w-sm bg-white dark:bg-[#2a2b2d] rounded-xl shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-8">
             Welcome Back
           </h2>
   
           {error && (
-            <p className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center text-base">
+            <p className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center text-sm">
               {error}
             </p>
           )}
   
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label
                 htmlFor="username"
-                className="block mb-2 text-lg font-medium text-gray-700 dark:text-gray-300"
+                className="block mb-1 text-base font-medium text-gray-700 dark:text-gray-200"
               >
                 Username
               </label>
@@ -53,14 +53,14 @@ export default function Login() {
                 placeholder="Enter your username"
                 onChange={handleChange}
                 required
-                className="w-full px-5 py-4 text-lg rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#10a37f] transition"
+                className="w-full px-4 py-3 text-base rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#10a37f] transition"
               />
             </div>
   
             <div>
               <label
                 htmlFor="password"
-                className="block mb-2 text-lg font-medium text-gray-700 dark:text-gray-300"
+                className="block mb-1 text-base font-medium text-gray-700 dark:text-gray-200"
               >
                 Password
               </label>
@@ -71,19 +71,19 @@ export default function Login() {
                 placeholder="Enter your password"
                 onChange={handleChange}
                 required
-                className="w-full px-5 py-4 text-lg rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#10a37f] transition"
+                className="w-full px-4 py-3 text-base rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#10a37f] transition"
               />
             </div>
   
             <button
               type="submit"
-              className="w-full py-4 text-lg font-semibold bg-[#10a37f] hover:bg-[#0e8e6d] text-white rounded-lg transition"
+              className="w-full py-3 text-base font-semibold bg-[#10a37f] hover:bg-[#0e8e6d] text-white rounded-md transition"
             >
               Sign In
             </button>
           </form>
   
-          <p className="text-md mt-8 text-center text-gray-600 dark:text-gray-400">
+          <p className="text-sm mt-6 text-center text-gray-600 dark:text-gray-300">
             Don’t have an account?{" "}
             <a
               href="/register"
