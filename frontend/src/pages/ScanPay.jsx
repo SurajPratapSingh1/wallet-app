@@ -1,74 +1,130 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { notify } from "../utils/notify.js";
+import { Html5Qrcode } from "html5-qrcode";
+
 const API = import.meta.env.VITE_API_BASE_URL;
 
 export default function ScanPay() {
-    const { user } = useAuth();
-    const [receiver, setReceiver] = useState("");
-    const [amount, setAmount] = useState("");
-    const [message, setMessage] = useState("");
-    const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const [receiver, setReceiver] = useState("");
+  const [amount, setAmount] = useState("");
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+  const scannerRef = useRef(null);
 
-    const handlePay = async (e) => {
-        e.preventDefault();
-        try {
-            const res = await axios.post(`${API}/api/wallet/transfer`, {
-                to: receiver,
-                amount: Number(amount),
-                }, {
-                headers: {
-                    Authorization: user.token,
-                },
-            });
-            setMessage(res.data.message);
-            notify("Payment Successful", `Sent ₹${amount} points to ${receiver}!`);
-            setTimeout(() => navigate("/dashboard"),2000);
-        } catch (err) {
-          if (err.response?.status === 403 || err.response?.status === 401) {
-            alert("Session expired. Please log in again.");
-            logout();
-            navigate("/");
-          } else {
-            setMessage(err.response?.data?.error || "Payment failed");
-          }
+  useEffect(() => {
+    const scanner = new Html5Qrcode("qr-reader");
+
+    Html5Qrcode.getCameras()
+      .then((devices) => {
+        if (devices && devices.length) {
+          const cameraId = devices[0].id;
+          scanner
+            .start(
+              cameraId,
+              {
+                fps: 10,
+                qrbox: 250,
+              },
+              (decodedText) => {
+                console.log("QR code scanned:", decodedText);
+                setReceiver(decodedText); // auto-fill receiver
+                scanner.stop();
+              },
+              (errorMessage) => {
+                // You can console.log errors here
+              }
+            )
+            .catch((err) => console.error("Failed to start scanner", err));
         }
+      })
+      .catch((err) => console.error("Camera error", err));
+
+    scannerRef.current = scanner;
+
+    return () => {
+      if (scannerRef.current) {
+        scannerRef.current.stop().catch(() => {});
+      }
     };
+  }, []);
 
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
-    <form onSubmit={handlePay} className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg w-full max-w-md">
-    <h2 className="text-2xl font-bold mb-6 text-center text-black dark:text-white">Scan & Pay</h2>
+  const handlePay = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        `${API}/api/wallet/transfer`,
+        {
+          to: receiver,
+          amount: Number(amount),
+        },
+        {
+          headers: {
+            Authorization: user.token,
+          },
+        }
+      );
+      setMessage(res.data.message);
+      notify("Payment Successful", `Sent ₹${amount} points to ${receiver}!`);
+      setTimeout(() => navigate("/dashboard"), 2000);
+    } catch (err) {
+      if (err.response?.status === 403 || err.response?.status === 401) {
+        alert("Session expired. Please log in again.");
+        logout();
+        navigate("/");
+      } else {
+        setMessage(err.response?.data?.error || "Payment failed");
+      }
+    }
+  };
 
-    <input
-      className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 dark:text-white"
-      placeholder="Receiver Username"
-      value={receiver}
-      onChange={(e) => setReceiver(e.target.value)}
-      required
-    />
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg mb-6">
+        <h2 className="text-xl font-bold mb-4 text-center text-black dark:text-white">
+          📷 Scan QR Code
+        </h2>
+        <div id="qr-reader" className="w-full aspect-square rounded-lg overflow-hidden" />
+      </div>
 
-    <input
-      className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 dark:text-white"
-      placeholder="Amount"
-      type="number"
-      value={amount}
-      onChange={(e) => setAmount(e.target.value)}
-      required
-    />
+      <form
+        onSubmit={handlePay}
+        className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg w-full max-w-md"
+      >
+        <h2 className="text-2xl font-bold mb-6 text-center text-black dark:text-white">
+          Send Points
+        </h2>
 
-    <button className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">
-      Send Points
-    </button>
+        <input
+          className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 dark:text-white"
+          placeholder="Receiver Username"
+          value={receiver}
+          onChange={(e) => setReceiver(e.target.value)}
+          required
+        />
 
-    {message && (
-      <p className="mt-4 text-center text-sm text-green-700 dark:text-green-400">{message}</p>
-    )}
-  </form>
-</div>
+        <input
+          className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 dark:text-white"
+          placeholder="Amount"
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          required
+        />
 
-);
+        <button className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">
+          Send Points
+        </button>
 
+        {message && (
+          <p className="mt-4 text-center text-sm text-green-700 dark:text-green-400">
+            {message}
+          </p>
+        )}
+      </form>
+    </div>
+  );
 }
