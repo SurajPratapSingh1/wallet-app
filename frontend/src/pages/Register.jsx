@@ -23,20 +23,70 @@ export default function Register() {
     };
 
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
-      <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-black dark:text-white">Register</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <input className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 dark:text-white" name="username" placeholder="Username" onChange={handleChange} required />
-        <input className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 dark:text-white" name="email" type="email" placeholder="Email" onChange={handleChange} required />
-        <input className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 dark:text-white" name="password" type="password" placeholder="Password" onChange={handleChange} required />
-        <button className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">Register</button>
-        <p className="text-sm mt-4 text-center text-black dark:text-gray-300">
-          Already have an account? <a className="text-blue-600" href="/">Login</a>
-        </p>
-      </form>
-    </div>
-    
-  );
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-[#1e1e1e] px-4">
+        <div className="w-full max-w-sm bg-white dark:bg-[#2a2b2d] rounded-xl shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
+            Create Account
+          </h2>
+  
+          {error && (
+            <p className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center text-sm">
+              {error}
+            </p>
+          )}
+  
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <input
+                className="w-full px-4 py-3 text-base rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="username"
+                placeholder="Username"
+                onChange={handleChange}
+                required
+              />
+            </div>
+  
+            <div>
+              <input
+                className="w-full px-4 py-3 text-base rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={handleChange}
+                required
+              />
+            </div>
+  
+            <div>
+              <input
+                className="w-full px-4 py-3 text-base rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="password"
+                name="password"
+                placeholder="Password"
+                onChange={handleChange}
+                required
+              />
+            </div>
+  
+            <button
+              type="submit"
+              className="w-full py-3 text-base font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-md transition"
+            >
+              Register
+            </button>
+          </form>
+  
+          <p className="text-sm mt-6 text-center text-gray-600 dark:text-gray-300">
+            Already have an account?{" "}
+            <a
+              href="/"
+              className="text-blue-500 font-medium hover:underline"
+            >
+              Login
+            </a>
+          </p>
+        </div>
+      </div>
+    );
 
 }
