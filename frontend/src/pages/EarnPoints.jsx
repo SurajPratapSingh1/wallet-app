@@ -22,7 +22,7 @@ export default function EarnPoints() {
                 headers : {Authorization : user.token},
             });
             setMsg(res.data.message);
-            notify("🎉 Points Earned", `You earned ₹{res.data.reward} points!`);
+            notify("🎉 Points Earned", `You earned ₹${res.data.reward} points!`);
         } catch (err) {
           if (err.response?.status === 403 || err.response?.status === 401) {
             alert("Session expired. Please log in again.");

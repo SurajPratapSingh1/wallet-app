@@ -24,7 +24,7 @@ export default function ScanPay() {
                 },
             });
             setMessage(res.data.message);
-            notify("Payment Successful", `Sent ₹{amount} points to ${receiver}!`);
+            notify("Payment Successful", `Sent ₹${amount} points to ${receiver}!`);
             setTimeout(() => navigate("/dashboard"),2000);
         } catch (err) {
           if (err.response?.status === 403 || err.response?.status === 401) {
