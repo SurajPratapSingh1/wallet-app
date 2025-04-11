@@ -41,7 +41,9 @@ export default function Dashboard() {
         },
       })
       .then((res) => {
-        const fetchedTransactions = res.data.transactions;
+        const fetchedTransactions = res.data.transactions.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
         setTransactions(fetchedTransactions);
 
         const lastTxn = fetchedTransactions[0];
@@ -52,6 +54,7 @@ export default function Dashboard() {
           lastTxn.type === "received" &&
           lastTxn._id !== lastNotifiedId
         ) {
+          console.log("Triggering notification for received txn:", lastTxn);
           notify(
             "💸 Points Received!",
             `You got ${lastTxn.amount} points from ${lastTxn.with}`
